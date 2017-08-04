@@ -2,7 +2,7 @@
   "name": "wait-for",
   "version": "2.2.4",
   "scripts": {
-    "test": "./node_modules/.bin/bats wait-for.bats",
+    "test": "bats wait-for.bats",
     "test:docker": "docker build -t wait-for-test . && docker run --rm -it wait-for-test"
   },
   "devDependencies": {
