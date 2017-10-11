@@ -20,12 +20,20 @@ USAGE
 }
 
 wait_for() {
+  _HOST=$HOST
+  _PORT=$PORT
   for i in `seq $TIMEOUT` ; do
     nc -z "$HOST" "$PORT" > /dev/null 2>&1
-    
+
     result=$?
     if [ $result -eq 0 ] ; then
       if [ $# -gt 0 ] ; then
+        unset HOST
+        unset PORT
+        HOST=$_HOST
+        PORT=$_PORT
+        unset _HOST
+        unset _PORT
         exec "$@"
       fi
       exit 0

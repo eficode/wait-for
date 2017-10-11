@@ -2,7 +2,7 @@
 
 @test "google should be immediately found" {
   run ./wait-for google.com:80 -- echo 'success'
-  
+
   [ "$output" = "success" ]
 }
 
@@ -11,4 +11,13 @@
 
   [ "$status" -ne 0 ]
   [ "$output" != "success" ]
+}
+
+@test "preserve existing environment variable" {
+  HOST=myweb.com
+  PORT=8080
+  run ./wait-for google.com:80 -- echo 'success'
+
+  [ "$(echo $HOST)" = 'myweb.com' ]
+  [ "$(echo $PORT)" = '8080' ]
 }
