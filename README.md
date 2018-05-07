@@ -11,6 +11,7 @@ When using this tool, you only need to pick the `wait-for` file as part of your 
 ```
 ./wait-for host:port [-t timeout] [-- command args]
   -q | --quiet                        Do not output any status messages
+  -s | --strict                       Only execute subcommand if the test succeeds
   -t TIMEOUT | --timeout=timeout      Timeout in seconds, zero for no timeout
   -- COMMAND ARGS                     Execute command with args after the test finishes
 ```
@@ -24,6 +25,15 @@ $ ./wait-for www.eficode.com:80 -- echo "Eficode site is up"
 
 Connection to www.eficode.com port 80 [tcp/http] succeeded!
 Eficode site is up
+```
+
+The subcommand will be executed regardless if the service is up or not. If you wish to execute the subcommand only if the service is up, add the --strict argument. In this example, we will test port 81 on www.google.com which will fail:
+
+```
+$ ./wait-for www.eficode.com:80 -- echo "Eficode site is up"
+$ ./wait-for www.google.com:81 --timeout=1 --strict -- echo "google is up"
+Operation timed out
+google is up
 ```
 
 To wait for database container to become available:
