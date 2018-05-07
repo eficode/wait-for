@@ -13,6 +13,7 @@ usage() {
 Usage:
   $cmdname host:port [-t timeout] [-- command args]
   -q | --quiet                        Do not output any status messages
+  -s | --strict                       Only execute subcommand if the test succeeds
   -t TIMEOUT | --timeout=timeout      Timeout in seconds, zero for no timeout
   -- COMMAND ARGS                     Execute command with args after the test finishes
 USAGE
@@ -33,6 +34,12 @@ wait_for() {
     sleep 1
   done
   echo "Operation timed out" >&2
+  if [ $result -ne 0 ] && [ $STRICT -ne 1 ] ; then
+    if [ $# -gt 0 ] ; then
+      exec "$@"
+    fi
+    exit 0
+  fi
   exit 1
 }
 
@@ -46,6 +53,10 @@ do
     ;;
     -q | --quiet)
     QUIET=1
+    shift 1
+    ;;
+    -s | --strict)
+    STRICT=1
     shift 1
     ;;
     -t)
@@ -75,5 +86,7 @@ if [ "$HOST" = "" -o "$PORT" = "" ]; then
   echoerr "Error: you need to provide a host and port to test."
   usage 2
 fi
+
+STRICT=${STRICT:-0}
 
 wait_for "$@"
