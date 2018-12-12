@@ -9,7 +9,7 @@ When using this tool, you only need to pick the `wait-for` file as part of your 
 ## Usage
 
 ```
-./wait-for host:port [-t timeout] [-- command args]
+./wait-for host:port [host:port...] [-t timeout] [-- command args]
   -q | --quiet                        Do not output any status messages
   -t TIMEOUT | --timeout=timeout      Timeout in seconds, zero for no timeout
   -- COMMAND ARGS                     Execute command with args after the test finishes
@@ -41,6 +41,26 @@ services:
     command: sh -c './wait-for db:5432 -- npm start'
     depends_on:
       - db
+```
+
+To wait for several containers to become available:
+
+```
+version: '2'
+
+services:
+  db:
+    image: postgres:9.4
+
+  elk:
+    image: sebp/elk
+
+  backend:
+    build: backend
+    command: sh -c './wait-for db:5432 elk:9563 -- npm start'
+    depends_on:
+      - db
+      - elk
 ```
 
 ## Testing
