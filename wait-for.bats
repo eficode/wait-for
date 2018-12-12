@@ -12,3 +12,9 @@
   [ "$status" -ne 0 ]
   [ "$output" != "success" ]
 }
+
+@test "google and bing should be immediately found" {
+  run ./wait-for google.com:80 bing.com:80 -- echo 'success'
+  
+  [ "$output" = "success" ]
+}
