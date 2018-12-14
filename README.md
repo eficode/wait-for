@@ -9,7 +9,7 @@ When using this tool, you only need to pick the `wait-for` file as part of your 
 ## Usage
 
 ```
-./wait-for host:port [-t timeout] [-- command args]
+./wait-for host:port [host2:port2 ... [hostN:portN]] [-t timeout] [-- command args]
   -q | --quiet                        Do not output any status messages
   -t TIMEOUT | --timeout=timeout      Timeout in seconds, zero for no timeout
   -- COMMAND ARGS                     Execute command with args after the test finishes
