@@ -1,7 +1,8 @@
 #!/bin/sh
 
-TIMEOUT=15
+TIMEOUT=150
 QUIET=0
+WAITFOR_RETRY_DELAY=0.1
 
 echoerr() {
   if [ "$QUIET" -ne 1 ]; then printf "%s\n" "$*" 1>&2; fi
@@ -11,7 +12,7 @@ usage() {
   exitcode="$1"
   cat << USAGE >&2
 Usage:
-  $cmdname host:port [-t timeout] [-- command args]
+  $cmdname host:port|url [-t timeout] [-- command args]
   -q | --quiet                        Do not output any status messages
   -t TIMEOUT | --timeout=timeout      Timeout in seconds, zero for no timeout
   -- COMMAND ARGS                     Execute command with args after the test finishes
@@ -22,7 +23,7 @@ USAGE
 wait_for() {
   for i in `seq $TIMEOUT` ; do
     nc -z "$HOST" "$PORT" > /dev/null 2>&1
-    
+
     result=$?
     if [ $result -eq 0 ] ; then
       if [ $# -gt 0 ] ; then
@@ -30,7 +31,24 @@ wait_for() {
       fi
       exit 0
     fi
-    sleep 1
+    sleep $WAITFOR_RETRY_DELAY
+  done
+  echo "Operation timed out" >&2
+  exit 1
+}
+
+wait_for_http() {
+  for i in `seq $TIMEOUT` ; do
+    wget --timeout=1 -q "$WAITFOR_URL" -O /dev/null > /dev/null 2>&1
+
+    result=$?
+    if [ $result -eq 0 ] ; then
+      if [ $# -gt 0 ] ; then
+        exec "$@"
+      fi
+      exit 0
+    fi
+    sleep $WAITFOR_RETRY_DELAY
   done
   echo "Operation timed out" >&2
   exit 1
@@ -39,6 +57,10 @@ wait_for() {
 while [ $# -gt 0 ]
 do
   case "$1" in
+    http*)
+    WAITFOR_URL=$1
+    shift 1
+    ;;
     *:* )
     HOST=$(printf "%s\n" "$1"| cut -d : -f 1)
     PORT=$(printf "%s\n" "$1"| cut -d : -f 2)
@@ -71,9 +93,13 @@ do
   esac
 done
 
-if [ "$HOST" = "" -o "$PORT" = "" ]; then
-  echoerr "Error: you need to provide a host and port to test."
+if [ "$HOST" = "" -o "$PORT" = "" ] && [ "$WAITFOR_URL" = "" ]; then
+  echoerr "Error: you need to provide a host and port OR an URL to test."
   usage 2
 fi
 
-wait_for "$@"
+if [ "$WAITFOR_URL" != "" ]; then
+  wait_for_http "$@"
+else
+  wait_for "$@"
+fi

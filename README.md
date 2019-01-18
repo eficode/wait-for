@@ -4,12 +4,14 @@
 
 When using this tool, you only need to pick the `wait-for` file as part of your project.
 
+It uses `netcat` for testing ports, and `wget` for HTTP status.
+
 [![Build Status](https://travis-ci.org/eficode/wait-for.svg?branch=master)](https://travis-ci.org/eficode/wait-for)
 
 ## Usage
 
 ```
-./wait-for host:port [-t timeout] [-- command args]
+./wait-for host:port|url [-t timeout] [-- command args]
   -q | --quiet                        Do not output any status messages
   -t TIMEOUT | --timeout=timeout      Timeout in seconds, zero for no timeout
   -- COMMAND ARGS                     Execute command with args after the test finishes
@@ -24,12 +26,14 @@ $ ./wait-for www.eficode.com:80 -- echo "Eficode site is up"
 
 Connection to www.eficode.com port 80 [tcp/http] succeeded!
 Eficode site is up
+
+$ ./wait-for http://www.eficode.com:80/ping -- echo "Eficode site is up"
 ```
 
 To wait for database container to become available:
 
 
-```
+```yml
 version: '2'
 
 services:
@@ -41,6 +45,27 @@ services:
     command: sh -c './wait-for db:5432 -- npm start'
     depends_on:
       - db
+```
+
+To wait for your API service to become available:
+
+
+```yml
+version: '2'
+
+services:
+  db:
+    image: postgres:9.4
+
+  api:
+    image: my_awesome_api
+
+  tests:
+    build: tests
+    command: sh -c './wait-for http://api/ping -- jest test'
+    depends_on:
+      - db
+      - api
 ```
 
 ## Testing
