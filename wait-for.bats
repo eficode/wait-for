@@ -2,7 +2,7 @@
 
 @test "google should be immediately found" {
   run ./wait-for google.com:80 -- echo 'success'
-  
+
   [ "$output" = "success" ]
 }
 
