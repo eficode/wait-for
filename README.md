@@ -15,6 +15,12 @@ When using this tool, you only need to pick the `wait-for` file as part of your 
   -- COMMAND ARGS                     Execute command with args after the test finishes
 ```
 
+## Dependencies
+Netcat
+
+Example:
+https://packages.debian.org/sid/netcat 
+
 ## Examples
 
 To check if [eficode.com](https://eficode.com) is available:
