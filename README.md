@@ -49,3 +49,12 @@ Ironically testing is done using [bats](https://github.com/sstephenson/bats), wh
 
     docker build -t wait-for .
     docker run -t wait-for
+    
+## Note
+
+Make sure netcat is installed in your Dockerfile before running the command.
+```
+RUN apt-get -q update && apt-get -qy install netcat
+```
+https://stackoverflow.com/questions/44663180/docker-why-does-wait-for-always-time-out
+
