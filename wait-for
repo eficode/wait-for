@@ -1,39 +1,71 @@
 #!/bin/sh
 
+OLD_TIMEOUT=$TIMEOUT
+OLD_QUIET=$QUIET
+OLD_PORT=$PORT
+OLD_HOST=$HOST
+OLD_LOOSE=$LOOSE
+
 TIMEOUT=15
 QUIET=0
+LOOSE=0
+
+if ! which nc >/dev/null; then
+  echo "Netcat is not installed. This script requires netcat to work correctly."
+  exit 1
+fi
 
 echoerr() {
   if [ "$QUIET" -ne 1 ]; then printf "%s\n" "$*" 1>&2; fi
+}
+
+conditionally_output() {
+  if [ "$QUIET" -ne 1 ]; then
+    "$@"
+  else
+    "$@" > /dev/null 2>&1
+  fi
 }
 
 usage() {
   exitcode="$1"
   cat << USAGE >&2
 Usage:
-  $cmdname host:port [-t timeout] [-- command args]
+  $(basename $0) host:port [-t timeout] [-- command args]
   -q | --quiet                        Do not output any status messages
+  -l | --loose                        Execute subcommand even if the test times out
   -t TIMEOUT | --timeout=timeout      Timeout in seconds, zero for no timeout
   -- COMMAND ARGS                     Execute command with args after the test finishes
 USAGE
   exit "$exitcode"
 }
 
+test_connection() {
+  conditionally_output echo "Testing connection to $1:$2..."
+
+  # force a 1-second timeout on darwin (https://stackoverflow.com/a/20460402/2063546)
+  # POSIX-compliant string inclusion test https://stackoverflow.com/a/8811800/2063546
+  if [ "${OSTYPE#*darwin*}" != "$OSTYPE" ] ; then
+    conditionally_output nc -z -w 1 -G 1 "$1" "$2"
+  else
+    conditionally_output nc -z -w 1 "$1" "$2"
+  fi
+}
+
 wait_for() {
+  local result
   for i in `seq $TIMEOUT` ; do
-    nc -z "$HOST" "$PORT" > /dev/null 2>&1
-    
+    # use a 1-second timeout, but still sleep 0.1 seconds after just to be safe
+    test_connection "$HOST" "$PORT"
     result=$?
-    if [ $result -eq 0 ] ; then
-      if [ $# -gt 0 ] ; then
-        exec "$@"
-      fi
-      exit 0
-    fi
+    if [ $result -eq 0 ] ; then break ; fi
     sleep 1
   done
-  echo "Operation timed out" >&2
-  exit 1
+  [ $result -ne 0 ] && echoerr "Operation timed out"
+  if [ $result -eq 0 -o $LOOSE -eq 1 -a $# -gt 0 ] ; then
+    TIMEOUT=$OLD_TIMEOUT QUIET=$OLD_QUIET PORT=$OLD_PORT HOST=$OLD_HOST LOOSE=$OLD_LOOSE exec "$@"
+  fi
+  exit $result
 }
 
 while [ $# -gt 0 ]
@@ -46,6 +78,10 @@ do
     ;;
     -q | --quiet)
     QUIET=1
+    shift 1
+    ;;
+    -l | --loose)
+    LOOSE=1
     shift 1
     ;;
     -t)

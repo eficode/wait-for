@@ -2,7 +2,7 @@
   "name": "wait-for",
   "version": "0.1.0",
   "scripts": {
-    "test": "./node_modules/.bin/bats wait-for.bats"
+    "test": "./run_tests.sh"
   },
   "dependencies": {
     "bats": "^0.4.2"

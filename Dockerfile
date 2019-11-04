@@ -8,4 +8,5 @@ WORKDIR /app
 COPY . /app
 RUN npm install
 
-CMD ./node_modules/.bin/bats wait-for.bats
+# On launch, run the test suite via npm
+CMD npm test
