@@ -71,6 +71,12 @@ do
   esac
 done
 
+
+if ! type "nc" > /dev/null; then
+    echo "Error: netcat is required for wait-for to run." >&2
+    exit 1
+fi
+
 if [ "$HOST" = "" -o "$PORT" = "" ]; then
   echoerr "Error: you need to provide a host and port to test."
   usage 2
