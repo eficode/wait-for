@@ -20,9 +20,10 @@ USAGE
 }
 
 wait_for() {
+  type nc > /dev/null 2>&1 || { echo >&2 "wait-for requires nc to be installed.  Aborting."; exit 1; }
   for i in `seq $TIMEOUT` ; do
     nc -z "$HOST" "$PORT" > /dev/null 2>&1
-    
+
     result=$?
     if [ $result -eq 0 ] ; then
       if [ $# -gt 0 ] ; then
