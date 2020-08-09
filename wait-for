@@ -20,6 +20,11 @@ USAGE
 }
 
 wait_for() {
+ if ! command -v nc >/dev/null; then
+    echoerr 'nc command is missing!'
+    exit 1
+  fi
+
   for i in `seq $TIMEOUT` ; do
     nc -z "$HOST" "$PORT" > /dev/null 2>&1
     
