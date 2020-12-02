@@ -32,3 +32,16 @@
   [ "$status" -ne 0 ]
   [ "$output" != "success" ]
 }
+
+@test "environment variables should be restored for command invocation" {
+  HOST=success run ./wait-for -t 1 google.com:80 -- sh -c 'echo "$HOST"'
+
+  [ "$output" = "success" ]
+}
+
+@test "unset environment variables should be restored as unset for command invocation" {
+  run ./wait-for -t 1 google.com:80 -- sh -uc 'echo "$HOST"'
+
+  [ "$status" -ne 0 ]
+  [ "$output" != "google.com" ]
+}
