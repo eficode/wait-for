@@ -27,7 +27,7 @@ wait_for() {
 
   for i in `seq $TIMEOUT` ; do
     nc -z "$HOST" "$PORT" > /dev/null 2>&1
-    
+
     result=$?
     if [ $result -eq 0 ] ; then
       if [ $# -gt 0 ] ; then
