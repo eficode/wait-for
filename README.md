@@ -49,10 +49,10 @@ With the file locally on your file system, you can directly invoke it.
   -- COMMAND ARGS                     Execute command with args after the test finishes
 ```
 
-Alternatively, you could download the script when invoking the command and pipe it into `sh` or `bash` (requires `curl` to be installed):
+Alternatively, you could download the script and pipe it into `sh`:
 
-```
-$ sh -s -- google.com:80 -- echo "success" < <(curl -s https://raw.githubusercontent.com/eficode/wait-for/v1.1.0/wait-for)
+```sh
+$ wget -qO- https://raw.githubusercontent.com/eficode/wait-for/v2.1.0/wait-for | sh -s -- google.com:80 -- echo success
 ```
 
 _Note: When using the latter option, make sure to pin the version. Future releases could introduce non-backwards compatible changes._
