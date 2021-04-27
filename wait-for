@@ -63,7 +63,7 @@ wait_for() {
   while :; do
     case "$PROTOCOL" in
       tcp) 
-        nc -z "$HOST" "$PORT" > /dev/null 2>&1
+        nc -w 1 -z "$HOST" "$PORT" > /dev/null 2>&1
         ;;
       http)
         wget --timeout=1 -q "$HOST" -O /dev/null > /dev/null 2>&1 
