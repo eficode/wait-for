@@ -54,7 +54,7 @@ wait_for() {
       ;;
     wget)
       if ! command -v wget >/dev/null; then
-        echoerr 'nc command is missing!'
+        echoerr 'wget command is missing!'
         exit 1
       fi
       ;;
