@@ -5,7 +5,7 @@
     "test": "./node_modules/.bin/bats wait-for.bats"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.0",
+    "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.0",
     "bats": "^1.5.0",
     "semantic-release": "^18.0.0"
