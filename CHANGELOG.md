@@ -1,3 +1,7 @@
+### Features
+
+* show version with `-v` or `--version` option
+
 ## [2.1.3](https://github.com/eficode/wait-for/compare/v2.1.2...v2.1.3) (2021-07-12)
 
 

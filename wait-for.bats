@@ -13,6 +13,12 @@
   [ "$output" != "success" ]
 }
 
+@test "support version option" {
+  run ./wait-for -v
+
+  [ "$output" = "2.1.3" ]
+}
+
 @test "support condensed option style" {
   run ./wait-for -qt1 google.com:80 -- echo 'success'
 
