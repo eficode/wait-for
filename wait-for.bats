@@ -2,7 +2,7 @@
 
 @test "google should be immediately found" {
   run ./wait-for google.com:80 -- echo 'success'
-  
+
   [ "$output" = "success" ]
 }
 
@@ -31,6 +31,28 @@
 
   [ "$status" -ne 0 ]
   [ "$output" != "success" ]
+}
+
+@test "wget timeout does not double" {
+  timeout=10
+  cat >delay <<-EOF
+	#!/usr/bin/env bash
+	sleep $((timeout + 1))
+	EOF
+  chmod +x delay
+  nc -lk -p 80 -e $(pwd)/delay & ncpid=$!
+  start_time=$(date +%s)
+  run ./wait-for -t ${timeout} http://localhost/
+  end_time=$(date +%s)
+  kill $ncpid
+  rm -f delay
+
+  [ "$status" != 0 ]
+  [ "$output" = "Operation timed out" ]
+  elapsed=$((end_time - start_time))
+  [ ${elapsed} -ge ${timeout} ]
+  limit=$((timeout * 3 / 2))
+  [ ${elapsed} -lt ${limit} ]
 }
 
 @test "environment variable HOST should be restored for command invocation" {
