@@ -63,6 +63,8 @@ wait_for() {
       ;;
   esac
 
+  TIMEOUT_END=$(($(date +%s) + TIMEOUT))
+
   while :; do
     case "$PROTOCOL" in
       tcp) 
@@ -94,15 +96,13 @@ wait_for() {
       exit 0
     fi
 
-    if [ "$TIMEOUT" -le 0 ]; then
-      break
+    if [ $(date +%s) -ge $TIMEOUT_END ]; then
+      echo "Operation timed out" >&2
+      exit 1
     fi
-    TIMEOUT=$((TIMEOUT - 1))
 
     sleep 1
   done
-  echo "Operation timed out" >&2
-  exit 1
 }
 
 while :; do
