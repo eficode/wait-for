@@ -56,7 +56,7 @@ With the file locally on your file system, you can directly invoke it.
 Alternatively, you could download the script and pipe it into `sh`:
 
 ```sh
-$ wget -qO- https://raw.githubusercontent.com/eficode/wait-for/v2.2.0/wait-for | sh -s -- google.com:80 -- echo success
+$ wget -qO- https://raw.githubusercontent.com/eficode/wait-for/v2.2.1/wait-for | sh -s -- google.com:80 -- echo success
 ```
 
 _Note: When using the latter option, make sure to pin the version by commit hash. Future releases could introduce non-backwards compatible changes and leaves you vulnerable to malicious users modifying this script in the future (as has e.g. [happened with Codecov](https://about.codecov.io/security-update/))._
