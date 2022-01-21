@@ -96,7 +96,7 @@ wait_for() {
       exit 0
     fi
 
-    if [ $(date +%s) -ge $TIMEOUT_END ]; then
+    if [ $TIMEOUT -ne 0 -a $(date +%s) -ge $TIMEOUT_END ]; then
       echo "Operation timed out" >&2
       exit 1
     fi

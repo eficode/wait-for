@@ -33,6 +33,29 @@
   [ "$output" != "success" ]
 }
 
+@test "wget timeout zero does not immediately timeout" {
+  # Arrange
+  timeout=0  # The timeout we will use to invoke the wait-for command with
+  delay=5  # The amount of seconds to wait to see if our indefinite timeout works
+
+  # Act
+  # - Invoke non-existing local webserver and record duration
+  start_time=$(date +%s)
+  run timeout $delay ./wait-for -t ${timeout} http://localhost/
+  end_time=$(date +%s)
+
+  # Assert
+  # - Assert that the script should't have printed that it timed-out
+  [ "$output" != "Operation timed out" ]
+
+  # - Expect a non-zero exit code
+  [ "$status" != 0 ]
+
+  # - Assert that wait-for waited at least as long as we we're going to test delaying for. 
+  elapsed=$((end_time - start_time))
+  [ ${elapsed} -ge ${delay} ]
+}
+
 @test "wget timeout does not double" {
   timeout=10
   cat >delay <<-EOF
