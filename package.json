@@ -2,7 +2,8 @@
   "name": "wait-for",
   "version": "2.2.1",
   "scripts": {
-    "test": "./node_modules/.bin/bats wait-for.bats"
+    "test": "./node_modules/.bin/bats wait-for.bats",
+    "test:docker": "docker build -t wait-for-test . && docker run --rm -it wait-for-test"
   },
   "devDependencies": {
     "@google/semantic-release-replace-plugin": "^1.1.0",
