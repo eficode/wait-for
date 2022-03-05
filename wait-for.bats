@@ -1,5 +1,21 @@
 #!/usr/bin/env bats
 
+@test "throws an error when wget is missing when using http" {
+  # Run the script in a shell with an empty PATH, such that it's not able to find wget
+  run sh -c "PATH='' ./wait-for http://google.com"
+
+  [ "$status" -ne 0 ]
+  [ "$output" = "wget command is missing!" ]
+}
+
+@test "throws an error when wget is missing when using https" {
+  # Run the script in a shell with an empty PATH, such that it's not able to find wget
+  run sh -c "PATH='' ./wait-for https://google.com"
+
+  [ "$status" -ne 0 ]
+  [ "$output" = "wget command is missing!" ]
+}
+
 @test "google should be immediately found" {
   run ./wait-for google.com:80 -- echo 'success'
 
