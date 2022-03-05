@@ -23,6 +23,9 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 20
 
+    # Prevents running multiple release scripts at the same time
+    concurrency: 'release'
+
     needs:
       - test
 
