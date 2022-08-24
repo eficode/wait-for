@@ -10,7 +10,7 @@
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
     "bats": "^1.7.0",
-    "semantic-release": "^19.0.4"
+    "semantic-release": "^19.0.5"
   },
   "release": {
     "plugins": [
