@@ -9,7 +9,7 @@
     "@google/semantic-release-replace-plugin": "^1.1.0",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
-    "bats": "^1.8.0",
+    "bats": "^1.8.2",
     "semantic-release": "^19.0.5"
   },
   "release": {
