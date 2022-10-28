@@ -49,6 +49,7 @@ With the file locally on your file system, you can directly invoke it.
 ./wait-for host:port|url [-t timeout] [-- command args]
   -q | --quiet                        Do not output any status messages
   -t TIMEOUT | --timeout=timeout      Timeout in seconds, zero for no timeout
+                                      Defaults to 15 seconds
   -v | --version                      Show the version of this tool
   -- COMMAND ARGS                     Execute command with args after the test finishes
 ```
