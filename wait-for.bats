@@ -67,7 +67,7 @@
   # - Expect a non-zero exit code
   [ "$status" != 0 ]
 
-  # - Assert that wait-for waited at least as long as we we're going to test delaying for. 
+  # - Assert that wait-for waited at least as long as we we're going to test delaying for.
   elapsed=$((end_time - start_time))
   [ ${elapsed} -ge ${delay} ]
 }
