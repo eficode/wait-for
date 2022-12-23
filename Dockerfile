@@ -13,7 +13,8 @@ RUN npm ci
 COPY . /app/
 
 # Perform tests
-RUN npm run test
+RUN npm test
+# Perform tests when running this test-env container
 CMD npm test
 
 FROM alpine:edge
