@@ -17,7 +17,7 @@ RUN npm run test
 CMD npm test
 
 FROM alpine:edge
-RUN apk add --no-cache curl
+RUN apk add --no-cache netcat-openbsd wget
 ENTRYPOINT ["/wait-for"]
 CMD ["--help"]
 COPY --from=test-env /app/wait-for /wait-for
