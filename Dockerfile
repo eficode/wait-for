@@ -1,7 +1,7 @@
 FROM node:16-alpine@sha256:a9b9cb880fa429b0bea899cd3b1bc081ab7277cc97e6d2dcd84bd9753b2027e1 as test-env
 
 # Install bash
-RUN apk add --no-cache bash && mkdir -p /app
+RUN apk add --no-cache bash netcat-openbsd nmap-ncat wget && mkdir -p /app
 WORKDIR /app
 
 # Install all Node dependencies
