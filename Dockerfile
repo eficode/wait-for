@@ -1,8 +1,20 @@
-FROM node:16-alpine@sha256:a9b9cb880fa429b0bea899cd3b1bc081ab7277cc97e6d2dcd84bd9753b2027e1 as test-env
+#################
+#  Base layer   #
+#################
+FROM alpine:edge as runtime-base
 
-# Install bash
-RUN apk add --no-cache bash netcat-openbsd nmap-ncat wget && mkdir -p /app
+# Install all dependencies
+RUN apk add --no-cache bash nmap-ncat wget
+
 WORKDIR /app
+
+#################
+#  Test image   #
+#################
+FROM runtime-base as test-env
+
+# Install Node.js
+RUN apk add --no-cache nodejs npm
 
 # Install all Node dependencies
 COPY package.json /app/
@@ -12,13 +24,15 @@ RUN npm ci
 # Copy source code
 COPY . /app/
 
-# Perform tests
-RUN npm test
 # Perform tests when running this test-env container
 CMD npm test
 
-FROM alpine:edge
-RUN apk add --no-cache netcat-openbsd wget
-ENTRYPOINT ["/wait-for"]
+#################
+# Runtime image #
+#################
+FROM runtime-base as runtime
+
+COPY ./wait-for .
+
+ENTRYPOINT ["./wait-for"]
 CMD ["--help"]
-COPY --from=test-env /app/wait-for /wait-for
