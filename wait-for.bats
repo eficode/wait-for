@@ -79,7 +79,7 @@
 	sleep $((timeout + 1))
 	EOF
   chmod +x delay
-  ncat -lk -p 80 -e $(pwd)/delay & ncpid=$!
+  nc -lk -p 80 -e $(pwd)/delay & ncpid=$!
   start_time=$(date +%s)
   run ./wait-for -t ${timeout} http://localhost/
   end_time=$(date +%s)

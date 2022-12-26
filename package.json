@@ -3,7 +3,7 @@
   "version": "2.2.4",
   "scripts": {
     "test": "bats wait-for.bats",
-    "test:docker": "docker build --no-cache --target test-env -t wait-for-test ."
+    "test:docker": "docker build --target test-env --tag wait-for-test . && docker run --rm wait-for-test"
   },
   "devDependencies": {
     "@google/semantic-release-replace-plugin": "^1.2.0",
