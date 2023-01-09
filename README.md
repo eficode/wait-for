@@ -123,10 +123,10 @@ services:
 
 Testing is done using [bats](https://github.com/bats-core/bats-core), which we install using [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm). 
 
-For reproducability, we run our tests inside Docker, such that we have control over the version of [bash](<https://en.wikipedia.org/wiki/Bash_(Unix_shell)>) we're testing against.
+For reproducibility, we run our tests inside Docker, such that we have control over the version of [bash](<https://en.wikipedia.org/wiki/Bash_(Unix_shell)>) we're testing against.
 
 ```bash
-docker build -t wait-for .
+docker build --target test-env --tag wait-for .
 docker run --rm -t wait-for
 ```
 
