@@ -6,11 +6,11 @@
     "test:docker": "docker build --target test-env --tag wait-for-test . && docker run --rm wait-for-test"
   },
   "devDependencies": {
-    "@google/semantic-release-replace-plugin": "^1.2.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "bats": "^1.9.0",
-    "semantic-release": "^21.0.7"
+    "semantic-release": "^21.0.7",
+    "semantic-release-replace-plugin": "^1.2.6"
   },
   "release": {
     "plugins": [
@@ -24,7 +24,7 @@
         }
       ],
       [
-        "@google/semantic-release-replace-plugin",
+        "semantic-release-replace-plugin",
         {
           "replacements": [
             {
