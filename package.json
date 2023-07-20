@@ -10,7 +10,7 @@
     "@semantic-release/git": "^10.0.1",
     "bats": "^1.9.0",
     "semantic-release": "^21.0.7",
-    "semantic-release-replace-plugin": "^1.2.6"
+    "semantic-release-replace-plugin": "^1.2.7"
   },
   "release": {
     "plugins": [
