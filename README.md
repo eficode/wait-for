@@ -31,9 +31,6 @@
     
   <br/>
   
-  <a href="https://hub.docker.com/r/eficode/wait-for/builds">
-  <img alt="Docker Cloud Build Status" src="https://img.shields.io/docker/cloud/build/eficode/wait-for?label=build&logo=docker&style=flat-square">
-  </a>
   <a href="https://hub.docker.com/r/eficode/wait-for">
   <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/eficode/wait-for?label=pulls&logo=docker&style=flat-square">
   </a>
